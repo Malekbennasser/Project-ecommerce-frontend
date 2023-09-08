@@ -10,6 +10,7 @@ function EditCategory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState([]);
   const navigate = useNavigate();
+  const { id } = useParams();
   const [categoryInput, setCategory] = useState({
     slug: "",
     name: "",
@@ -19,12 +20,12 @@ function EditCategory() {
     meta_keyword: "",
     meta_descrip: "",
   });
-  const { id } = useParams();
 
   useEffect(() => {
     axios.get(`api/edit-category/${id}`).then((response) => {
       if (response.data.status === 200) {
         const categoryData = response.data.category;
+        console.log("data", categoryData);
         setCategory({
           slug: categoryData.slug,
           name: categoryData.name,
@@ -47,17 +48,18 @@ function EditCategory() {
     setCategory({ ...categoryInput, [e.target.name]: e.target.value });
   };
 
-  const updateCategory = (e) => {
+  const updateCategory = async (e) => {
     e.preventDefault();
     const data = categoryInput;
+    console.log("data", data);
 
-    axios.put(`/api/update-category/${id}`, data).then((response) => {
+    await axios.put(`/api/update-category/${id}`, data).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.messages, "success");
         setError([]);
       } else if (response.data.status === 422) {
         swal("All fields are mandetory", "error");
-        setError(response.data.errors);
+        setError(response.data.error);
       } else if (response.data.errors === 404) {
         swal("Error", response.data.messages, "error");
         navigate("admin/view-category");

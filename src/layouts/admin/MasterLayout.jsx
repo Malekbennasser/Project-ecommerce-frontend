@@ -10,6 +10,8 @@ import Category from "../../components/admin/category/Category";
 import ViewCategory from "../../components/admin/category/ViewCategory";
 import EditCategory from "../../components/admin/category/EditCategory";
 import AddProduct from "../../components/admin/product/AddProduct";
+import ViewProduct from "../../components/admin/product/ViewProduct";
+import EditProduct from "../../components/admin/product/EditProduct";
 
 const MasterLayout = () => {
   return (
@@ -32,6 +34,8 @@ const MasterLayout = () => {
                 element={<EditCategory />}
               />
               <Route path="/admin/add-product" element={<AddProduct />} />
+              <Route path="/admin/view-product" element={<ViewProduct />} />
+              <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/admin/profile" element={<Profile />} />
             </Routes>
           </main>

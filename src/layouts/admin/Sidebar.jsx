@@ -38,6 +38,7 @@ const Sidebar = () => {
             data-bs-target="#collapseProduct"
             aria-expanded="false"
             aria-controls="collapseProduct"
+            loading="lazy"
           >
             <div className="sb-nav-link-icon">
               <i className="fas fa-columns"></i>

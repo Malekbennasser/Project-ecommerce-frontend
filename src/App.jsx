@@ -13,6 +13,8 @@ import Category from "./components/admin/category/Category";
 import ViewCategory from "./components/admin/category/ViewCategory";
 import EditCategory from "./components/admin/category/EditCategory";
 import AddProduct from "./components/admin/product/AddProduct";
+import ViewProduct from "./components/admin/product/ViewProduct";
+import EditProduct from "./components/admin/product/EditProduct";
 
 // import Dashboard from "./components/admin/Dashboard";
 // import Profile from "./components/admin/Profile";
@@ -93,6 +95,17 @@ function App() {
           </Route>
           <Route element={<AdminPrivateRoute />}>
             <Route path="/admin/add-product" element={<AddProduct />} exact />
+          </Route>
+          <Route element={<AdminPrivateRoute />}>
+            <Route path="/admin/view-product" element={<ViewProduct />} exact />
+          </Route>
+
+          <Route element={<AdminPrivateRoute />}>
+            <Route
+              path="/admin/edit-product/:id"
+              element={<EditProduct />}
+              exact
+            />
           </Route>
         </Routes>
       </div>

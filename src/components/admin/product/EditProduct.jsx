@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
@@ -6,7 +6,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import swal from "sweetalert";
 
-function AddProduct() {
+function EditProduct() {
+  const [loading, setLoading] = useState(true);
   const [categorylist, setCategorylist] = useState([]);
   const [productInput, setProduct] = useState({
     category_id: "",
@@ -22,14 +23,17 @@ function AddProduct() {
     original_price: "",
     qty: "",
     brand: "",
-    featured: "",
-    popular: "",
-    status: "",
+    // featured: "",
+    // popular: "",
+    // status: "",
   });
-  const [picture, setPicture] = useState([]);
 
+  const navigate = useNavigate();
+  const [picture, setPicture] = useState([]);
+  const [allcheckbox, setCheckboxes] = useState([]);
   const [errorlist, setError] = useState([]);
 
+  const { id } = useParams();
   const handleInput = (e) => {
     e.persist();
     setProduct({ ...productInput, [e.target.name]: e.target.value });
@@ -39,18 +43,37 @@ function AddProduct() {
     setPicture({ image: e.target.files[0] });
   };
 
+  const handleCheckbox = (e) => {
+    e.persist();
+    setCheckboxes({ ...allcheckbox, [e.target.name]: e.target.checked });
+  };
+
   useEffect(() => {
     axios.get("/api/all-category").then((response) => {
       if (response.data.status === 200) {
         setCategorylist(response.data.category);
       }
     });
-  }, []);
 
-  const submitProduct = (e) => {
+    axios.get(`/api/edit-product/${id}`).then((response) => {
+      if (response.data.status === 200) {
+        //   console.log(response.data.product);
+        setProduct(response.data.product);
+        setCheckboxes(allcheckbox);
+      } else if (response.data.status === 404) {
+        swal("error", response.data.massages, "error");
+        navigate("/admin/view-product");
+      }
+
+      setLoading(false);
+    });
+  }, [navigate, allcheckbox, id]);
+
+  const updateProduct = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
+
     formData.append("image", picture.image);
     formData.append("category_id", productInput.category_id);
     formData.append("slug", productInput.slug);
@@ -65,45 +88,44 @@ function AddProduct() {
     formData.append("original_price", productInput.original_price);
     formData.append("qty", productInput.qty);
     formData.append("brand", productInput.brand);
-    formData.append("featured", productInput.featured);
-    formData.append("popular", productInput.popular);
-    formData.append("status", productInput.status);
+    formData.append("featured", allcheckbox.featured ? "1" : "0");
+    formData.append("popular", allcheckbox.popular ? "1" : "0");
+    formData.append("status", allcheckbox.status ? "1" : "0");
     console.log(formData);
     let axiosConfig = {
       headers: {
+        method: "put",
         "Content-Type": "multipart/form-data",
         "Access-Control-Allow-Origin": "*",
       },
     };
-    axios.post("/api/store-product", formData, axiosConfig).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
+    await axios
+      .post(`/api/update-product/${id}`, formData, axiosConfig)
+      .then((response) => {
+        if (response.data.status === 200) {
+          swal("Success", response.data.message, "success");
+          console.log(allcheckbox);
 
-        setProduct({
-          ...productInput,
-          category_id: "",
-          slug: "",
-          name: "",
-          description: "",
-          meta_title: "",
-          meta_keyword: "",
-          meta_descrip: "",
-          selling_price: "",
-          original_price: "",
-          qty: "",
-          brand: "",
-          featured: "",
-          popular: "",
-          status: "",
-        });
-
-        setError([]);
-      } else if (response.data.status === 422) {
-        swal("all Fields are mandetory", "", "error");
-        setError(response.data.error);
-      }
-    });
+          setError([]);
+        } else if (response.data.status === 422) {
+          swal("all Fields are mandetory", "", "error");
+          setError(response.data.error);
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
+          navigate("/admin/view-product");
+        }
+      });
   };
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -120,7 +142,7 @@ function AddProduct() {
                 <div className="card mt-4">
                   <div className="card-header">
                     <h4>
-                      Add Product
+                      Edit Product
                       <Link
                         to="/admin/view-product"
                         className="btn btn-primary btn-sm float-end"
@@ -131,7 +153,7 @@ function AddProduct() {
                   </div>
                   <div className="card-body">
                     <form
-                      onSubmit={submitProduct}
+                      onSubmit={updateProduct}
                       encType="multipart/form-data"
                     >
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -185,7 +207,6 @@ function AddProduct() {
                           role="tabpanel"
                           aria-labelledby="home-tab"
                         >
-                          A
                           <div className="form-group mb-3">
                             <label>Select Category</label>
 
@@ -239,7 +260,7 @@ function AddProduct() {
                             <textarea
                               type="text"
                               onChange={handleInput}
-                              value={productInput.description}
+                              value={productInput.description || ""}
                               name="description"
                               className="form-control"
                             ></textarea>
@@ -251,7 +272,6 @@ function AddProduct() {
                           role="tabpanel"
                           aria-labelledby="seotags-tab"
                         >
-                          B
                           <div className="form-group mb-3">
                             <label>Meta Title</label>
                             <input
@@ -280,7 +300,7 @@ function AddProduct() {
                             <textarea
                               type="text"
                               onChange={handleInput}
-                              value={productInput.meta_descrip}
+                              value={productInput.meta_descrip || ""}
                               name="meta_descrip"
                               className="form-control"
                             ></textarea>
@@ -292,7 +312,6 @@ function AddProduct() {
                           role="tabpanel"
                           aria-labelledby="otherdetails-tab"
                         >
-                          C
                           <div className="row">
                             <div className="col-md-4 form-group mb-3">
                               <label>Selling Price</label>
@@ -354,6 +373,11 @@ function AddProduct() {
                                 name="image"
                                 className="form-control"
                               />
+                              <img
+                                src={`http://localhost:8000/${productInput.image}`}
+                                width={50}
+                                className="mt-3"
+                              />
                               <small className="text-danger">
                                 {errorlist.image}
                               </small>
@@ -363,8 +387,10 @@ function AddProduct() {
                               <label>Featured (checked=shown)</label>
                               <input
                                 type="checkbox"
-                                onChange={handleInput}
-                                value={productInput.featured}
+                                onChange={handleCheckbox}
+                                defaultChecked={
+                                  allcheckbox.featured === 1 ? true : false
+                                }
                                 name="featured"
                                 className="w-50 h-50"
                               />
@@ -374,8 +400,10 @@ function AddProduct() {
                               <label>Popular (checked=shown)</label>
                               <input
                                 type="checkbox"
-                                onChange={handleInput}
-                                value={productInput.popular}
+                                onChange={handleCheckbox}
+                                defaultChecked={
+                                  allcheckbox.popular === 1 ? true : false
+                                }
                                 name="popular"
                                 className="w-50 h-50"
                               />
@@ -384,8 +412,10 @@ function AddProduct() {
                               <label>Status (checked=Hidden)</label>
                               <input
                                 type="checkbox"
-                                onChange={handleInput}
-                                value={productInput.status}
+                                onChange={handleCheckbox}
+                                defaultChecked={
+                                  allcheckbox.status === 1 ? true : false
+                                }
                                 name="status"
                                 className="w-50 h-50"
                               />
@@ -397,7 +427,7 @@ function AddProduct() {
                         type="submit"
                         className="btn btn-primary mt-3 px-4 float-end"
                       >
-                        Submit
+                        Update
                       </button>
                     </form>
                   </div>
@@ -412,4 +442,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default EditProduct;
