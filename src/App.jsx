@@ -4,20 +4,22 @@ import Dashboard from "./components/admin/Dashboard";
 import Profile from "./components/admin/Profile";
 import Login from "./components/frontend/auth/Login";
 import Register from "./components/frontend/auth/Register";
-import Home from "./components/frontend/Home";
+// import Home from "./components/frontend/Home";
 import axios from "axios";
 import AdminPrivateRoute from "./AdminPrivateRoute";
-import Page403 from "./components/errors/Page403";
-import Page404 from "./components/errors/Page404";
+// import Page403 from "./components/errors/Page403";
+// import Page404 from "./components/errors/Page404";
 import Category from "./components/admin/category/Category";
 import ViewCategory from "./components/admin/category/ViewCategory";
 import EditCategory from "./components/admin/category/EditCategory";
 import AddProduct from "./components/admin/product/AddProduct";
 import ViewProduct from "./components/admin/product/ViewProduct";
 import EditProduct from "./components/admin/product/EditProduct";
+// import About from "./components/frontend/About";
+// import Contact from "./components/frontend/Contact";
 
-// import Dashboard from "./components/admin/Dashboard";
-// import Profile from "./components/admin/Profile";
+import FrontendLayout from "./layouts/frontend/FrontendLayout";
+import RoutesList from "./routes/RoutesPublics";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.headers.post["Content-type"] = "application/json";
@@ -54,13 +56,49 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/403" element={<Page403 />} />
-          <Route path="/404" element={<Page404 />} />
+          {/* <Route path="/403" element={<Page403 />} />
+          <Route path="/404" element={<Page404 />} /> */}
 
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} /> */}
+          {/* <Route
+            element={
+              <PublicRoute>
+                {routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={route.element}
+                  />
+                ))}
+              </PublicRoute>
+            }
+          /> */}
+          {/* {routes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))} */}
 
-          <Route path="/register" element={<RegistrationPage />} />
+          <Route
+            path="*"
+            element={
+              <FrontendLayout>
+                <Routes>
+                  {RoutesList.map((route, index) => (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={route.element}
+                    />
+                  ))}
+                </Routes>
+              </FrontendLayout>
+            }
+          />
+
+          {/* <Route path="/login" element={<LoginPage />} />
+
+          <Route path="/register" element={<RegistrationPage />} /> */}
 
           <Route element={<AdminPrivateRoute />}>
             <Route path="/admin/*" element={<MasterLayout />} />
@@ -114,43 +152,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <Route
-            path="/admin"
-            name="Admin"
-            render={(props) => <MasterLayout {...props} />}
-          /> */
-}
-{
-  /* <Route exact path="/admin/dashboard" Component={Dashbord} /> */
-}
-{
-  /* <Route exact path="/admin/profile" Component={Profile} /> */
-}
-{
-  /* <Route path="/admin" element={<MasterLayout />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/profile" element={<Profile />} /> */
-}
-
-{
-  /* <Route path="/login" element={<Login />} /> */
-}
-{
-  /* <Route path="/register" element={<Register />} /> */
-}
-
-{
-  /* <Route path="/login">
-            {localStorage.getItem("auth_token") ? navigate("/") : <Login />}
-          </Route>
-          <Route path="/register">
-            {localStorage.getItem("auth_token") ? navigate("/") : <Register />}
-          </Route> */
-}
-{
-  /* <Route path="/admin/*" element={<MasterLayout />} />
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/profile" element={<Profile />} /> */
-}

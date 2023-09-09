@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../../../layouts/frontend/Navbar";
+// import Navbar from "../../../layouts/frontend/Navbar";
 import { useState } from "react";
 import axios from "axios";
 import swal from "sweetalert";
@@ -45,7 +45,7 @@ function Register() {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <h1>register</h1>
       <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
