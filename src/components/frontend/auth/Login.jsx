@@ -26,6 +26,7 @@ function Login() {
     };
     axios.get("/sanctum/csrf-cookie").then(() => {
       axios.post(`api/login`, data).then((response) => {
+        console.log(response);
         if (response.data.status === 200) {
           localStorage.setItem("auth_token", response.data.token);
           localStorage.setItem("auth_name", response.data.username);
@@ -50,7 +51,6 @@ function Login() {
 
   return (
     <div>
-      {/* <Navbar /> */}
       <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
           <main>
@@ -89,12 +89,12 @@ function Login() {
                         </div>
 
                         <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
-                          <Link className="small" to="password.html">
+                          <Link className="small text-dark" to="">
                             Forgot Password?
                           </Link>
                           <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-dark rounded-0"
                             to="index.html"
                           >
                             Login
@@ -104,7 +104,12 @@ function Login() {
                     </div>
                     <div className="card-footer text-center py-3">
                       <div className="small">
-                        <a href="register.html">Need an account? Sign up!</a>
+                        <Link
+                          className="small text-dark text-decorration-none"
+                          to="/register"
+                        >
+                          Need an account? Sign up!
+                        </Link>
                       </div>
                     </div>
                   </div>

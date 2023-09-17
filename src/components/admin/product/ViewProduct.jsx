@@ -11,14 +11,19 @@ function ViewProduct() {
   const [product, setProductlist] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
     document.title = "View Product";
     axios.get("/api/view-product").then((response) => {
-      console.log(response.data.products);
-      if (response.data.status === 200) {
-        setProductlist(response.data.products);
+      if (isMounted) {
+        if (response.data.status === 200) {
+          setProductlist(response.data.products);
+        }
+        setLoading(false);
       }
-      setLoading(false);
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const deleteProduct = (e, id) => {
@@ -120,7 +125,7 @@ function ViewProduct() {
                   </div>
                   <div className="card-body">
                     <table className="table table-bordered table-striped">
-                      <thead>
+                      <thead className="text-center">
                         <tr>
                           <th>ID</th>
                           <th>Category Name</th>
@@ -133,7 +138,9 @@ function ViewProduct() {
                           <th>Delete</th>
                         </tr>
                       </thead>
-                      <tbody>{display_Productdata}</tbody>
+                      <tbody className="text-center">
+                        {display_Productdata}
+                      </tbody>
                     </table>
                   </div>
                 </div>

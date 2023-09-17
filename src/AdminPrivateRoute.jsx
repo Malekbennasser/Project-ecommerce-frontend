@@ -43,11 +43,6 @@ function AdminPrivateRoute() {
       }
     );
   }, [navigate]);
-  // Nettoyer les intercepteurs lorsque le composant est démonté
-  // return () => {
-  //   axios.interceptors.response.eject(axiosRetryInterceptor);
-  //   axios.interceptors.response.eject(axiosErrorInterceptor);
-  // };
 
   if (loading) {
     return <h1>Loading......</h1>;

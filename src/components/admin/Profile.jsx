@@ -4,7 +4,7 @@ import Sidebar from "../../layouts/admin/Sidebar";
 
 const Profile = () => {
   return (
-    <div className="sb-nav-fixed">
+    <div>
       <Navbar />
 
       <div id="layoutSidenav">

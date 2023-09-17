@@ -102,7 +102,7 @@ function ViewCategory() {
                   </div>
                   <div className="card-body">
                     <table className="table table-bordered table-striped">
-                      <thead>
+                      <thead className="text-center">
                         <tr>
                           <th>ID</th>
                           <th>Name</th>
@@ -112,7 +112,9 @@ function ViewCategory() {
                           <th>Delete</th>
                         </tr>
                       </thead>
-                      <tbody>{viewcategory_HTMLTABLE}</tbody>
+                      <tbody className="text-center">
+                        {viewcategory_HTMLTABLE}
+                      </tbody>
                     </table>
                   </div>
                 </div>

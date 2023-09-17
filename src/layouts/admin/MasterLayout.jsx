@@ -12,6 +12,7 @@ import EditCategory from "../../components/admin/category/EditCategory";
 import AddProduct from "../../components/admin/product/AddProduct";
 import ViewProduct from "../../components/admin/product/ViewProduct";
 import EditProduct from "../../components/admin/product/EditProduct";
+import Orders from "../../components/admin/Orders/Orders";
 
 const MasterLayout = () => {
   return (
@@ -37,6 +38,7 @@ const MasterLayout = () => {
               <Route path="/admin/view-product" element={<ViewProduct />} />
               <Route path="/admin/edit-product/:id" element={<EditProduct />} />
               <Route path="/admin/profile" element={<Profile />} />
+              <Route path="/admin/ordres" element={<Orders />} />
             </Routes>
           </main>
           <Footer />

@@ -72,7 +72,6 @@ function AddProduct() {
     let axiosConfig = {
       headers: {
         "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
       },
     };
     axios.post("/api/store-product", formData, axiosConfig).then((response) => {

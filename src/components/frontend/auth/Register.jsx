@@ -28,7 +28,7 @@ function Register() {
     axios.get("/sanctum/csrf-cookie").then(() => {
       // Login...
       axios.post(`/api/register`, data).then((res) => {
-        if (res.data.status === 200) {
+        if (res.data.status === 201) {
           localStorage.setItem("auth_token", res.data.token);
           localStorage.setItem("auth_name", res.data.username);
           swal("Success", res.data.message, "success");
@@ -45,8 +45,6 @@ function Register() {
 
   return (
     <div>
-      {/* <Navbar /> */}
-      <h1>register</h1>
       <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
           <main>
@@ -101,7 +99,7 @@ function Register() {
                           <div className="d-grid">
                             <button
                               type="submit"
-                              className="btn btn-primary btn-block"
+                              className="btn btn-dark rounded-0 btn-block"
                               to="#"
                             >
                               Create Account
@@ -112,7 +110,9 @@ function Register() {
                     </div>
                     <div className="card-footer text-center py-3">
                       <div className="small">
-                        <Link to="/login">Have an account? Go to login</Link>
+                        <Link className="text-dark" to="/login">
+                          Have an account? Go to login
+                        </Link>
                       </div>
                     </div>
                   </div>

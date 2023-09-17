@@ -2,35 +2,31 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <nav
+      className="sb-sidenav accordion sb-sidenav-dark fixed"
+      id="sidenavAccordion"
+    >
       <div className="sb-sidenav-menu">
         <div className="nav">
-          <div className="sb-sidenav-menu-heading">Core</div>
           <Link className="nav-link" to="/admin/dashboard">
-            <div className="sb-nav-link-icon">
-              <i className="fas fa-tachometer-alt"></i>
-            </div>
             Dashboard
           </Link>
+          <div className="sb-sidenav-menu-heading">Interface</div>
           <Link className="nav-link" to="/admin/category">
-            <div className="sb-nav-link-icon">
-              <i className="fas fa-tachometer-alt"></i>
-            </div>
             Add Category
           </Link>
           <Link className="nav-link" to="/admin/view-category">
-            <div className="sb-nav-link-icon">
-              <i className="fas fa-tachometer-alt"></i>
-            </div>
             View Category
           </Link>
           <Link className="nav-link" to="/admin/profile">
-            <div className="sb-nav-link-icon">
-              <i className="fas fa-tachometer-alt"></i>
-            </div>
             Profile
           </Link>
-          <div className="sb-sidenav-menu-heading">Interface</div>
+
+          <Link className="nav-link" to="/admin/ordres">
+            Orders
+          </Link>
+
+          {/* <div className="sb-sidenav-menu-heading">Interface</div> */}
           <Link
             className="nav-link collapsed"
             to="#"
@@ -40,9 +36,6 @@ const Sidebar = () => {
             aria-controls="collapseProduct"
             loading="lazy"
           >
-            <div className="sb-nav-link-icon">
-              <i className="fas fa-columns"></i>
-            </div>
             Products
             <div className="sb-sidenav-collapse-arrow">
               <i className="fas fa-angle-down"></i>
@@ -63,7 +56,7 @@ const Sidebar = () => {
               </Link>
             </nav>
           </div>
-          <Link
+          {/* <Link
             className="nav-link collapsed"
             to="#"
             data-bs-toggle="collapse"
@@ -149,11 +142,11 @@ const Sidebar = () => {
                   <Link className="nav-link" to="500.html">
                     500 Page
                   </Link>
-                </nav>
-              </div>
+                </nav> */}
+          {/* </div>
             </nav>
-          </div>
-          <div className="sb-sidenav-menu-heading">Addons</div>
+          </div> */}
+          {/* <div className="sb-sidenav-menu-heading">Addons</div>
           <Link className="nav-link" to="charts.html">
             <div className="sb-nav-link-icon">
               <i className="fas fa-chart-area"></i>
@@ -165,13 +158,13 @@ const Sidebar = () => {
               <i className="fas fa-table"></i>
             </div>
             Tables
-          </Link>
+          </Link> */}
         </div>
       </div>
-      <div className="sb-sidenav-footer">
+      {/* <div className="sb-sidenav-footer">
         <div className="small">Logged in as:</div>
         Start Bootstrap
-      </div>
+      </div> */}
     </nav>
   );
 };

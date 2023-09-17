@@ -63,9 +63,11 @@ function ProductDetail() {
       if (response.data.status === 201) {
         swal("Success", response.data.message, "success");
       } else if (response.data.status === 409) {
-        swal("Warning", response.data.message, "warning");
+        swal("Success", response.data.message, "warning");
       } else if (response.data.status === 401) {
         swal("Error", response.data.message, "error");
+      } else if (response.data.status === 404) {
+        swal("Warning", response.data.message, "warning");
       }
     });
   };
@@ -130,7 +132,7 @@ function ProductDetail() {
   }
   return (
     <div>
-      <div className="py-3 bg-warning">
+      <div className="py-3  bg-body-tertiary">
         <div className="container">
           <h6>
             Category /{product.category.name}/{product.name}

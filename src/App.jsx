@@ -1,9 +1,8 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MasterLayout from "./layouts/admin/MasterLayout";
 import Dashboard from "./components/admin/Dashboard";
 import Profile from "./components/admin/Profile";
-import Login from "./components/frontend/auth/Login";
-import Register from "./components/frontend/auth/Register";
+
 // import Home from "./components/frontend/Home";
 import axios from "axios";
 import AdminPrivateRoute from "./AdminPrivateRoute";
@@ -20,6 +19,7 @@ import EditProduct from "./components/admin/product/EditProduct";
 
 import FrontendLayout from "./layouts/frontend/FrontendLayout";
 import RoutesList from "./routes/RoutesPublics";
+import Orders from "./components/admin/Orders/Orders";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.headers.post["Content-type"] = "application/json";
@@ -32,29 +32,28 @@ axios.interceptors.request.use(function (config) {
 });
 
 function App() {
-  function RegistrationPage() {
-    const navigate = useNavigate();
-    // Check authentication status and handle redirection
-    if (localStorage.getItem("auth_token")) {
-      navigate("/");
-      return null; // Redirecting, so nothing needs to be rendered here.
-    } else {
-      return <Register />;
-    }
-  }
-  function LoginPage() {
-    const navigate = useNavigate();
-    // Check authentication status and handle redirection
-    if (localStorage.getItem("auth_token")) {
-      navigate("/");
-      return null; // Redirecting, so nothing needs to be rendered here.
-    } else {
-      return <Login />;
-    }
-  }
+  // function RegistrationPage() {
+  //   const navigate = useNavigate();
+
+  //   if (localStorage.getItem("auth_token")) {
+  //     navigate("/");
+  //     return null;
+  //     return <Register />;
+  //   }
+  // }
+  // function LoginPage() {
+  //   const navigate = useNavigate();
+
+  //   if (localStorage.getItem("auth_token")) {
+  //     navigate("/");
+  //     return null;
+  //   } else {
+  //     return <Login />;
+  //   }
+  // }
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App bg-body-tertiary">
         <Routes>
           {/* <Route path="/403" element={<Page403 />} />
           <Route path="/404" element={<Page404 />} /> */}
@@ -144,6 +143,10 @@ function App() {
               element={<EditProduct />}
               exact
             />
+          </Route>
+
+          <Route element={<AdminPrivateRoute />}>
+            <Route path="/admin/ordres" element={<Orders />} exact />
           </Route>
         </Routes>
       </div>

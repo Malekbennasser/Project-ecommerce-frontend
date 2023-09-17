@@ -34,14 +34,14 @@ function ViewCategory() {
     var showCategoryList = "";
     showCategoryList = category.map((item, index) => {
       return (
-        <div className="col-md-4 " key={index}>
+        <div className="col-md-4 py-3" key={index}>
           <div className="card">
             <div className="card-body">
               <Link to={`${item.slug}`}>
                 <img src="" className="w-100" alt={item.name} />
               </Link>
               <Link to={`${item.slug}`}>
-                <h5>{item.name}</h5>
+                <h6>{item.name}</h6>
               </Link>
             </div>
           </div>
@@ -51,15 +51,15 @@ function ViewCategory() {
   }
 
   return (
-    <div>
-      <div className="py-3 bg-warning">
+    <div className="bg-body-tertiary">
+      <div className="py-3 bg-body-tertiary">
         <div className="container">
-          <h6>Category page</h6>
+          <h6>Category </h6>
         </div>
       </div>
 
-      <div className="py-3 ">
-        <div className="container">
+      <div className="py-3 bg-body-tertiary ">
+        <div className="container ">
           <div className="row">{showCategoryList}</div>
         </div>
       </div>

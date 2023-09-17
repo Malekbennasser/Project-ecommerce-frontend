@@ -1,16 +1,18 @@
+import Footer from "./Footer";
 import Navbar from "./Navbar";
 // import PropTypes from "prop-types";
-
 const FrontendLayout = ({ children }) => {
   return (
     <div>
       <Navbar />
 
-      <div>{children}</div>
+      <div className="container-fluid ">{children}</div>
+      <Footer />
     </div>
   );
 };
 // FrontendLayout.propTypes = {
-//   children: PropTypes.node.isRequired, // Validez que children est de type 'node'
+//   children: PropTypes.node.isRequired,
 // };
+
 export default FrontendLayout;

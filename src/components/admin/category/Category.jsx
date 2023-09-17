@@ -132,7 +132,9 @@ function Category() {
                             value={categoryInput.slug}
                             className="form-control"
                           />
-                          <span>{categoryInput.error_list.slug}</span>
+                          <span className="text-danger">
+                            {categoryInput.error_list.slug}
+                          </span>
                         </div>
 
                         <div className="form-group mb-3">
@@ -144,7 +146,9 @@ function Category() {
                             value={categoryInput.name}
                             className="form-control"
                           />
-                          <span>{categoryInput.error_list.name}</span>
+                          <span className="text-danger">
+                            {categoryInput.error_list.name}
+                          </span>
                         </div>
 
                         <div className="form-group mb-3">
@@ -182,7 +186,9 @@ function Category() {
                             value={categoryInput.meta_title}
                             className="form-control"
                           />
-                          <span>{categoryInput.error_list.meta_title}</span>
+                          <span className="text-danger">
+                            {categoryInput.error_list.meta_title}
+                          </span>
                         </div>
                         <div className="form-group mb-3">
                           <label>Meta Keywords</label>
@@ -208,7 +214,6 @@ function Category() {
                       type="submit"
                       className="btn btn-primary mt-3 px-4 float-end"
                     >
-                      {" "}
                       Submit
                     </button>
                   </form>
