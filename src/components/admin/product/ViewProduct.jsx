@@ -14,6 +14,7 @@ function ViewProduct() {
     let isMounted = true;
     document.title = "View Product";
     axios.get("/api/view-product").then((response) => {
+      console.log("View", response);
       if (isMounted) {
         if (response.data.status === 200) {
           setProductlist(response.data.products);
@@ -55,17 +56,24 @@ function ViewProduct() {
     );
   } else {
     let ProdStatus = "";
+    let ProdFeatrued = "";
 
     display_Productdata = product.map((item) => {
+      console.log("item:", item);
       if (item.status == "0") {
         ProdStatus = "Shown";
       } else if (item.status == "1") {
         ProdStatus = "Hidden";
       }
+      if (item.featured == "0") {
+        ProdFeatrued = "";
+      } else if (item.featured == "1") {
+        ProdFeatrued = "Featrued";
+      }
       return (
         <tr key={item.id}>
           <td>{item.id}</td>
-          <td>{item.category.name}</td>
+          <td>{item.category ? item.category.name : "N/A"}</td>
           <td>{item.name}</td>
           <td>{item.selling_price}</td>
           <td>
@@ -77,6 +85,7 @@ function ViewProduct() {
           </td>
 
           <td>{ProdStatus}</td>
+          <td>{ProdFeatrued}</td>
 
           <td>
             <Link
@@ -134,6 +143,7 @@ function ViewProduct() {
                           <th>Image</th>
 
                           <th>Status</th>
+                          <th>Featrued</th>
                           <th>Edit</th>
                           <th>Delete</th>
                         </tr>

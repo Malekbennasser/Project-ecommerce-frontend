@@ -3,7 +3,8 @@ import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../../Axios/AxiosConfig";
 import swal from "sweetalert";
 
 function EditCategory() {

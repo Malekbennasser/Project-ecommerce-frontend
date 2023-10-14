@@ -75,7 +75,7 @@ function AddProduct() {
       },
     };
     axios.post("/api/store-product", formData, axiosConfig).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status === 201) {
         swal("Success", response.data.message, "success");
 
         setProduct({
@@ -184,7 +184,6 @@ function AddProduct() {
                           role="tabpanel"
                           aria-labelledby="home-tab"
                         >
-                          A
                           <div className="form-group mb-3">
                             <label>Select Category</label>
 
@@ -250,7 +249,6 @@ function AddProduct() {
                           role="tabpanel"
                           aria-labelledby="seotags-tab"
                         >
-                          B
                           <div className="form-group mb-3">
                             <label>Meta Title</label>
                             <input
@@ -291,7 +289,6 @@ function AddProduct() {
                           role="tabpanel"
                           aria-labelledby="otherdetails-tab"
                         >
-                          C
                           <div className="row">
                             <div className="col-md-4 form-group mb-3">
                               <label>Selling Price</label>

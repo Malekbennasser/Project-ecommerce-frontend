@@ -93,7 +93,7 @@ div {
   color: #fff;
 }
 Nav #templatemo_nav_top {
-  min-height: 40px;
+  min-height: 50px;
 }
 #templatemo_nav_top * {
   font-size: 0.9em !important;
@@ -180,7 +180,7 @@ Nav #templatemo_nav_top {
 #template-mo-zay-hero-carousel .carousel-control-next i,
 #template-mo-zay-hero-carousel .carousel-control-prev i {
   color: #0c0f0d !important;
-  font-size: 2.8em !important;
+  font-size: 5em !important;
 }
 /* Carousel Brand */
 .tempaltemo-carousel .h1 {

@@ -1,4 +1,5 @@
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../Axios/AxiosConfig";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -9,12 +10,11 @@ function Cart() {
   const navigate = useNavigate();
   let totalCartPrice = 0;
 
-  if (!localStorage.getItem("auth_token")) {
-    navigate("/");
-    swal("Warning", "login to go to Cart Page", "error");
-  }
-
   useEffect(() => {
+    if (!localStorage.getItem("auth_token")) {
+      navigate("/");
+      swal("Warning", "login to go to Cart Page", "error");
+    }
     var isMounted = true;
     axios.get(`/api/cart`).then((response) => {
       if (isMounted) {
@@ -70,6 +70,13 @@ function Cart() {
         }
       });
   }
+  function calculateTotalCartPrice(cart) {
+    let totalPrice = 0;
+    for (const item of cart) {
+      totalPrice += item.product.selling_price * item.product_Qty;
+    }
+    return totalPrice;
+  }
 
   function deleteCartItem(e, cart_id) {
     e.preventDefault();
@@ -79,8 +86,22 @@ function Cart() {
 
     axios.delete(`/api/delete-cartitem/${cart_id}`).then((response) => {
       if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        thisCliked.closest("tr").remove();
+        setTimeout(() => {
+          swal("Success", response.data.message, "success");
+        }, 1000);
+
+        // setCart((prevCart) => prevCart.filter((item) => item.id !== cart_id));
+        // // Recalculate the total cart price
+        // totalCartPrice = calculateTotalCartPrice(cart);
+
+        setTimeout(() => {
+          thisCliked.closest("tr").remove();
+
+          // Update the cart state after removing an item
+          setCart((prevCart) => prevCart.filter((item) => item.id !== cart_id));
+          // Recalculate the total cart price
+          totalCartPrice = calculateTotalCartPrice(cart);
+        }, 300);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         thisCliked.innerText = "Remove";
@@ -119,7 +140,7 @@ function Cart() {
             </thead>
             <tbody>
               {cart.map((item, index) => {
-                totalCartPrice += item.product.selling_price * item.product_Qty;
+                totalCartPrice = calculateTotalCartPrice(cart);
                 return (
                   <tr key={index}>
                     <td width="10%">
@@ -132,7 +153,7 @@ function Cart() {
                     </td>
                     <td>{item.product.name} </td>
                     <td width="15%" className="text-center">
-                      {item.product.selling_price}
+                      {item.product.selling_price} €
                     </td>
                     <td width="15%">
                       <div className="input-group">
@@ -157,7 +178,7 @@ function Cart() {
                       </div>
                     </td>
                     <td width="15%" className="text-center">
-                      {item.product.selling_price * item.product_Qty}
+                      {item.product.selling_price * item.product_Qty} €
                     </td>
                     <td width="10%" className="text-center">
                       <button
@@ -180,11 +201,11 @@ function Cart() {
             <div className="card card-body rounded-0 mt-3">
               <h4>
                 Sub Total:
-                <span className="float-end">{totalCartPrice}</span>
+                <span className="float-end">{totalCartPrice} €</span>
               </h4>
               <h4>
                 Grand Total:
-                <span className="float-end">{totalCartPrice}</span>
+                <span className="float-end">{totalCartPrice} €</span>
               </h4>
               <hr />
               <Link to="/checkout" className="btn btn-dark rounded-0">

@@ -2,7 +2,8 @@ import { useState } from "react";
 import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../../Axios/AxiosConfig";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 

@@ -7,8 +7,8 @@ function Footer() {
       style={{ position: "relative", top: "12rem" }}
       id="tempaltemo_footer"
     >
-      <div className="container">
-        <div className="row">
+      <div className="container overflow-hidden text-center ">
+        <div className="row justify-content-center justify-content-around ">
           <div className="col-md-4 pt-5">
             <h2 className="h2 text-white border-bottom pb-3 border-light logo">
               THE STORE
@@ -16,56 +16,53 @@ function Footer() {
             <ul className="list-unstyled text-light footer-link-list">
               <li>
                 <i className="fas fa-map-marker-alt fa-fw"></i>
-                123 Consectetur at ligula 10660
+                123, Rue de la République 75001 Paris France
               </li>
               <li>
                 <i className="fa fa-phone fa-fw"></i>
-                <a className="text-decoration-none" href="">
-                  010-020-0340
-                </a>
+                <Link className="text-decoration-none" to="">
+                  +33 1 23 45 67 89
+                </Link>
               </li>
               <li>
                 <i className="fa fa-envelope fa-fw"></i>
-                <a
-                  className="text-decoration-none"
-                  href="mailto:info@company.com"
-                >
-                  info@company.com
-                </a>
+                <Link className="text-decoration-none" to="">
+                  contact@thestore.fr
+                </Link>
               </li>
             </ul>
           </div>
 
-          <div className="col-md-4 pt-5">
+          {/* <div className="col-md-4 pt-5">
             <h2 className="h2 text-light border-bottom pb-3 border-light">
               Products
             </h2>
             <ul className="list-unstyled text-light ">
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
               <li>
-                <a className="text-decoration-none" href="#"></a>
+                <Link className="text-decoration-none" to="#"></Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
-          <div className="col-md-4 pt-5">
+          <div className="col-md-3 pt-5">
             <h2 className="h2 text-light border-bottom pb-3 border-light">
               Further Info
             </h2>
@@ -76,12 +73,12 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <Link className="text-decoration-none" to="/about">
+                <Link className="text-decoration-none" to="about">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link className="text-decoration-none" to="/collections">
+                <Link className="text-decoration-none" to="collections">
                   Collection
                 </Link>
               </li>
@@ -91,7 +88,7 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <Link className="text-decoration-none" to="/contact">
+                <Link className="text-decoration-none" to="contact">
                   Contact
                 </Link>
               </li>
@@ -104,40 +101,40 @@ function Footer() {
             <div className="w-100 my-3 border-top border-light"></div>
           </div>
           <div className="col-auto me-auto">
-            <ul className="list-inline text-left footer-icons">
+            {/* <ul className="list-inline text-left footer-icons">
               <li className="list-inline-item border border-light rounded-circle text-center">
-                <a
+                <Link
                   className="text-light text-decoration-none"
                   href="http://facebook.com/"
                 >
                   <i className="fab fa-facebook-f fa-lg fa-fw"></i>
-                </a>
+                </Link>
               </li>
               <li className="list-inline-item border border-light rounded-circle text-center">
-                <a
+                <Link
                   className="text-light text-decoration-none"
                   href="https://www.instagram.com/"
                 >
                   <i className="fab fa-instagram fa-lg fa-fw"></i>
-                </a>
+                </Link>
               </li>
               <li className="list-inline-item border border-light rounded-circle text-center">
-                <a
+                <Link
                   className="text-light text-decoration-none"
                   href="https://twitter.com/"
                 >
                   <i className="fab fa-twitter fa-lg fa-fw"></i>
-                </a>
+                </Link>
               </li>
               <li className="list-inline-item border border-light rounded-circle text-center">
-                <a
+                <Link
                   className="text-light text-decoration-none"
                   href="https://www.linkedin.com/"
                 >
                   <i className="fab fa-linkedin fa-lg fa-fw"></i>
-                </a>
+                </Link>
               </li>
-            </ul>
+            </ul> */}
           </div>
           {/* <div className="col-auto">
             <label className="sr-only">Email address</label>

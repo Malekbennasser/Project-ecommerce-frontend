@@ -1,77 +1,153 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import swal from "sweetalert";
 
 function Home() {
-  return (
-    // <div classNameName="container-fluid bg-body-tertiary h-500">
-    //   <div classNameName="container-lg">
-    //     <div classNameName="row p-5">
-    //       <h1 classNameName="">Content here</h1>
+  const [category, setCategory] = useState();
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState([]);
+  const navigate = useNavigate();
+  const { product_slug } = useParams();
+  useEffect(() => {
+    let isMounted = true;
 
-    //       <div classNameName="col-sm-4">
-    //         <p>
-    //           Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
-    //           eveniet quis omnis unde eum ea rerum perferendis alias, quas,
-    //           deserunt quisquam quod fugit quidem maiores corporis sequi esse
-    //           praesentium vel illo atque laudantium dignissimos. Ut voluptatem
-    //           perferendis, sed laudantium nemo quas error harum amet corrupti
-    //           neque exercitationem minima et ex!
-    //         </p>
-    //         <button type="button" classNameName="btn btn-dark my-2">
-    //           Lorem ipsum
-    //         </button>
-    //       </div>
-    //       <div classNameName="col-sm-8">
-    //         <img
-    //           src="./src/images/mac.jpeg"
-    //           classNameName="img-thumbnail"
-    //           alt="..."
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-    <div>
-      <div
-        className="modal fade bg-white"
-        id="templatemo_search"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-lg" role="document">
-          <div className="w-100 pt-1 mb-5 text-right">
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <form
-            action=""
-            method="get"
-            className="modal-content modal-body border-0 p-0"
-          >
-            <div className="input-group mb-2">
-              <input
-                type="text"
-                className="form-control"
-                id="inputModalSearch"
-                name="q"
-                placeholder="Search ..."
-              />
-              <button
-                type="submit"
-                className="input-group-text bg-success text-light"
-              >
-                <i className="fa fa-fw fa-search text-white"></i>
-              </button>
-            </div>
-          </form>
+    axios.get("/api/getcategory").then((response) => {
+      console.log("category", response);
+      if (isMounted) {
+        if (response.data.status === 200) {
+          // console.log(response.data.category);
+          setCategory(response.data.category);
+          // setProduct(response.data.category);
+          setLoading(false);
+        }
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    var isMounted = true;
+    axios.get(`/api/getproduct`).then((response) => {
+      console.log("product", response);
+      if (isMounted) {
+        if (response.data.status === 200) {
+          setProduct(response.data.products);
+          // console.log(response.data.product_data.product.brand);
+          // setCategory(response.data.products);
+          console.log("product", response.data.products);
+          setLoading(false);
+        } else if (response.data.status === 400) {
+          swal("Warning", response.data.message, "");
+        } else if (response.data.status === 404) {
+          navigate("/");
+          swal("Warning", response.data.message, "error");
+        }
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [navigate, product_slug]);
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
-      {/* banner */}
+    );
+  } else {
+    var showCategoryList = "";
+    showCategoryList = category.map((item, index) => {
+      return (
+        <div className="col-md-4 py-3 " key={index}>
+          <div className="card rounded-0 border border-0 btn btn-outline-light">
+            {/* <Link
+              className="text-decoration-none text-dark"
+              to={`${item.slug}`}
+            ></Link> */}
+            <div className="card-body text-center">
+              <Link
+                className="text-decoration-none text-dark"
+                to={`/collections/${item.slug}`}
+              >
+                {/* <img src="" className="w-100" alt={item.name} /> */}{" "}
+                <h5>{item.name}</h5>
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+  var showProductList = "";
+  if (loading) {
+    return (
+      <div className="text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  } else {
+    showProductList = product.map((item, id) => {
+      console.log("product item", item);
+      if (item.featured) {
+        return (
+          <div className="col-md-4" key={id}>
+            <div className="card mb-3 product-wap rounded-0">
+              <div
+                className="card rounded-0"
+                style={{ width: "100%", height: "300px" }}
+              >
+                {/* <span className="badge bg-danger" value="featured">
+                  {item.featured}
+                </span> */}
+                <img
+                  className="card-img rounded-0 img-fluid"
+                  src={`http://localhost:8000/${item.image}`}
+                  style={{ objectFit: "cover", height: "100%" }}
+                  alt={item.name}
+                />
+                <div className="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center"></div>
+              </div>
+              <div className="card-body">
+                {item.featured === 1 ? (
+                  <span className="badge bg-danger float-end">Featured</span>
+                ) : null}
+                <Link to="" className="h3 text-decoration-none">
+                  {item.name}
+                </Link>
+
+                <p className="text-center mb-0">{item.selling_price} €</p>
+                <Link
+                  to={`collections/${item.category.slug}/${item.slug}`}
+                  className="btn btn-dark text-white rounded-0 float-end"
+                >
+                  Voir Produit
+                </Link>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    });
+  }
+  // {
+  //   showProductList = (
+  //     <div className="col-md-12">
+  //       <h4>No Products Available for {product.name}</h4>
+  //     </div>
+  //   );
+  // }
+
+  return (
+    <div>
       <div
         id="template-mo-zay-hero-carousel"
         className="carousel slide "
@@ -186,7 +262,7 @@ function Home() {
         </div>
         <Link
           className="carousel-control-prev text-dark text-decoration-none w-auto ps-3 "
-          href="#template-mo-zay-hero-carousel"
+          to="#template-mo-zay-hero-carousel"
           role="button"
           data-bs-slide="prev"
         >
@@ -206,55 +282,28 @@ function Home() {
       <section className="container py-5">
         <div className="row text-center pt-3">
           <div className="col-lg-6 m-auto">
-            <h1 className="h1">Categories of The Month</h1>
+            <h1 className="h1">Categories</h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem,
-              architecto?
+              Découvrez nos vastes catégories de produits, conçues pour
+              satisfaire toutes vos préférences et besoins.
             </p>
           </div>
         </div>
         <div className="row">
-          <div className="col-12 col-md-4 p-5 mt-3">
-            <Link to="/collections">
-              <img
-                src="./src/assets/frontend/assets/img/desktop-computer-icon-png-14.png"
-                className="rounded-circle img-fluid border"
-              />
-            </Link>
-            <h5 className="text-center mt-3 mb-3">Informatique</h5>
-            <p className="text-center">
-              <Link to="/collections" className="btn btn-dark">
-                Go Shop
-              </Link>
-            </p>
-          </div>
-          <div className="col-12 col-md-4 p-5 mt-3">
-            <Link to="#">
-              <img
-                src="./src/assets/frontend/assets/img/category_img_02.jpg"
-                className="rounded-circle img-fluid border"
-              />
-            </Link>
-            <h2 className="h5 text-center mt-3 mb-3">Shoes</h2>
-            <p className="text-center">
-              <Link to="/collections" className="btn btn-dark">
-                Go Shop
-              </Link>
-            </p>
-          </div>
-          <div className="col-12 col-md-4 p-5 mt-3">
-            <Link to="#">
-              <img
-                src="./src/assets/frontend/assets/img/category_img_03.jpg"
-                className="rounded-circle img-fluid border"
-              />
-            </Link>
-            <h2 className="h5 text-center mt-3 mb-3">Accessories</h2>
-            <p className="text-center">
-              <Link to="/collections" className="btn btn-dark">
-                Go Shop
-              </Link>
-            </p>
+          {/* <ViewCategory /> */}
+
+          <div className="bg-body-tertiary">
+            <div className="py-3 bg-body-tertiary">
+              <div className="container">
+                <h6> </h6>
+              </div>
+            </div>
+
+            <div className="py-3 bg-body-tertiary ">
+              <div className="container ">
+                <div className="row">{showCategoryList}</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -263,108 +312,15 @@ function Home() {
         <div className="container py-5">
           <div className="row text-center py-3">
             <div className="col-lg-6 m-auto">
-              <h1 className="h1">Featured Product</h1>
+              <h1 className="h1">Produit en Vedette</h1>
               <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum,
-                voluptates!
+                Explorez notre collection exclusive de produits innovants,
+                conçus pour répondre à tous vos besoins avec style et efficacité
               </p>
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-md-4 mb-4">
-              <div className="card h-100">
-                <Link to="">
-                  <img
-                    src="./src/assets/frontend/assets/img/jbl.png"
-                    className="card-img-top 
-                    "
-                    alt="..."
-                  />
-                </Link>
-                <div className="card-body">
-                  <ul className="list-unstyled d-flex justify-content-between">
-                    <li>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-muted fa fa-star"></i>
-                      <i className="text-muted fa fa-star"></i>
-                    </li>
-                    <li className="text-muted text-right">$240.00</li>
-                  </ul>
-                  <Link to="" className="h2 text-decoration-none text-dark">
-                    title
-                  </Link>
-                  <p className="card-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Sunt in culpa qui officia deserunt.
-                  </p>
-                  <p className="text-muted">button</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <div className="card h-100">
-                <Link>
-                  <img
-                    src="./src/assets/frontend/assets/img/feature_prod_02.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-                <div className="card-body">
-                  <ul className="list-unstyled d-flex justify-content-between">
-                    <li>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-muted fa fa-star"></i>
-                      <i className="text-muted fa fa-star"></i>
-                    </li>
-                    <li className="text-muted text-right">$480.00</li>
-                  </ul>
-                  <Link to="" className="h2 text-decoration-none text-dark">
-                    Title
-                  </Link>
-                  <p className="card-text">
-                    Aenean gravida dignissim finibus. Nullam ipsum diam, posuere
-                    vitae pharetra sed, commodo ullamcorper.
-                  </p>
-                  <p className="text-muted">button</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <div className="card h-100">
-                <Link to="">
-                  <img
-                    src="./src/assets/frontend/assets/img/feature_prod_03.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-                <div className="card-body">
-                  <ul className="list-unstyled d-flex justify-content-between">
-                    <li>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                      <i className="text-warning fa fa-star"></i>
-                    </li>
-                    <li className="text-muted text-right">$360.00</li>
-                  </ul>
-                  <Link to="" className="h2 text-decoration-none text-dark">
-                    title
-                  </Link>
-                  <p className="card-text">
-                    Curabitur ac mi sit amet diam luctus porta. Phasellus
-                    pulvinar sagittis diam, et scelerisque ipsum lobortis nec.
-                  </p>
-                  <p className="text-muted">button</p>
-                </div>
-              </div>
-            </div>
+            <div className="row">{showProductList}</div>
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
-import axios from "axios";
-import ReactDOM from "react-dom";
-import React, { useEffect, useState } from "react";
+// import axios from "axios";
+import axios from "../../Axios/AxiosConfig";
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
@@ -16,6 +17,12 @@ function Checkout() {
     swal("Warning", "login to go to Cart Page", "error");
   }
 
+  const [formData, setFormData] = useState({
+    number: "",
+    exp_month: "",
+    exp_year: "",
+    cvc: "",
+  });
   const [checkoutInput, setCheckinput] = useState({
     firstname: "",
     lastname: "",
@@ -54,6 +61,13 @@ function Checkout() {
     setCheckinput({ ...checkoutInput, [e.target.name]: e.target.value });
   };
 
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const Orderinfo_data = {
     firstname: checkoutInput.firstname,
     lastname: checkoutInput.lastname,
@@ -64,41 +78,52 @@ function Checkout() {
     state: checkoutInput.state,
     zipcode: checkoutInput.zipcode,
 
-    payment_mode: "Paid by Paypal",
+    payment_mode: "Paid by Stripe",
     payment_id: "",
   };
 
-  const PayPalButton = window.paypal.Buttons.driver("react", {
-    React,
-    ReactDOM,
-  });
-
-  const createOrder = (actions) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: totalCartPrice,
-          },
-        },
-      ],
-    });
-  };
-  const onApprove = (actions) => {
-    return actions.order.capture().then(function (details) {
-      console.log(details);
-      Orderinfo_data.payment_id = details.id;
-      axios.post("/api/place-order", Orderinfo_data).then((response) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("/api/place-order", Orderinfo_data).then((response) => {
+        console.log();
         if (response.data.status === 200) {
-          swal("Order Placed Successfully", response.data.message, "success");
+          // swal("Order Placed Successfully", response.data.message, "success");
           setError([]);
-          navigate("/than-you");
+          navigate("/thank-you");
         } else if (response.data.status === 422) {
-          swal("All fields are mandetory", "success");
+          swal("All fields are mandatory", "success");
           setError(response.data.errors);
         }
       });
-    });
+    } catch (error) {
+      console.error("Erreur inattendue :", error);
+    }
+    try {
+      const dataToSend = {
+        ...formData,
+        totalCartPrice: totalCartPrice,
+        orderId: cart[0].id,
+      };
+      console.log("data to send", dataToSend);
+
+      await axios.post(`/api/test`, dataToSend).then((response) => {
+        const paymentId = response.data.paymentIntent.payment_id; //
+        console.log(response.data.paymentIntent);
+        if (response.data.status === 200) {
+          console.log("id", paymentId); // Extract the payment ID
+          Orderinfo_data.payment_id = paymentId;
+          swal("Order Placed Successfully", paymentId, "success");
+          console.log("Paiement réussi :", paymentId);
+          navigate("/thank-you");
+        } else {
+          // Traitez les erreurs renvoyées par le serveur, par exemple, affichez-les à l'utilisateur.
+          console.error("Erreur de paiement :", response.data.errors);
+        }
+      });
+    } catch (error) {
+      console.error("Erreur inattendue :", error);
+    }
   };
 
   const submitOrder = (e, payment_mode) => {
@@ -311,7 +336,7 @@ function Checkout() {
 
           <div className="col-md-5">
             <table className="table table-bordered">
-              <thead>
+              <thead className="text-center">
                 <tr>
                   <th width="50%">Product</th>
                   <th>Price</th>
@@ -319,16 +344,16 @@ function Checkout() {
                   <th>Total</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-center">
                 {cart.map((item, index) => {
                   totalCartPrice +=
                     item.product.selling_price * item.product_Qty;
                   return (
                     <tr key={index}>
                       <td>{item.product.name}</td>
-                      <td>{item.product.selling_price}</td>
+                      <td>{item.product.selling_price} €</td>
                       <td>{item.product_Qty}</td>
-                      <td>{item.product.selling_price * item.product_Qty}</td>
+                      <td>{item.product.selling_price * item.product_Qty} €</td>
                     </tr>
                   );
                 })}
@@ -337,7 +362,7 @@ function Checkout() {
                     Grand Total
                   </td>
                   <td colSpan="2" className="text-end fw-bold">
-                    {totalCartPrice}
+                    {totalCartPrice} €
                   </td>
                 </tr>
               </tbody>
@@ -355,6 +380,7 @@ function Checkout() {
       </div>
     );
   }
+  /* console.log("Adem", cart[0].id); */
   return (
     <>
       <div
@@ -377,10 +403,66 @@ function Checkout() {
               ></button>
             </div>
             <div className="modal-body">
-              <PayPalButton
-                createOrder={(data, actions) => createOrder(data, actions)}
-                onApprove={(data, actions) => onApprove(data, actions)}
-              />
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="number" className="form-label">
+                    Numéro de carte:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="number"
+                    name="number"
+                    value={formData.number}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="exp_month" className="form-label">
+                    Mois expiration:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="exp_month"
+                    name="exp_month"
+                    value={formData.exp_month}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="exp_year" className="form-label">
+                    Année expiration:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="exp_year"
+                    name="exp_year"
+                    value={formData.exp_year}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="cvc" className="form-label">
+                    CVC:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="cvc"
+                    name="cvc"
+                    value={formData.cvc}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-dark rounded-0 w-100 my-5"
+                >
+                  Payer
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -388,11 +470,14 @@ function Checkout() {
 
       <div className="py-3 bg-body-tertiary">
         <div className="container">
-          <h6>Home / checkout</h6>
+          <h6>/ checkout</h6>
         </div>
       </div>
       <div className="py-3 ">
-        <div className="container">{checkout_HTML}</div>
+        <div className="container">
+          {checkout_HTML}
+          <div></div>
+        </div>
       </div>
     </>
   );

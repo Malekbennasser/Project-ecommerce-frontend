@@ -1,4 +1,5 @@
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../../Axios/AxiosConfig";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -34,14 +35,19 @@ function ViewCategory() {
     var showCategoryList = "";
     showCategoryList = category.map((item, index) => {
       return (
-        <div className="col-md-4 py-3" key={index}>
-          <div className="card">
-            <div className="card-body">
-              <Link to={`${item.slug}`}>
-                <img src="" className="w-100" alt={item.name} />
-              </Link>
-              <Link to={`${item.slug}`}>
-                <h6>{item.name}</h6>
+        <div className="col-md-4 py-3 " key={index}>
+          <div className="card rounded-0 border border-0 btn btn-outline-light">
+            {/* <Link
+              className="text-decoration-none text-dark"
+              to={`${item.slug}`}
+            ></Link> */}
+            <div className="card-body text-center">
+              <Link
+                className="text-decoration-none text-dark"
+                to={`${item.slug}`}
+              >
+                {/* <img src="" className="w-100" alt={item.name} /> */}{" "}
+                <h5>{item.name}</h5>
               </Link>
             </div>
           </div>
@@ -54,7 +60,7 @@ function ViewCategory() {
     <div className="bg-body-tertiary">
       <div className="py-3 bg-body-tertiary">
         <div className="container">
-          <h6>Category </h6>
+          <h6> </h6>
         </div>
       </div>
 

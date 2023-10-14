@@ -3,7 +3,8 @@ import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../../Axios/AxiosConfig";
 import swal from "sweetalert";
 
 function ViewCategory() {
@@ -87,7 +88,7 @@ function ViewCategory() {
           </div>
           <div id="layoutSidenav_content">
             <main>
-              <div className="container px-4 mt-3">
+              <div className="container-fluid px-4 mt-3">
                 <div className="card">
                   <div className="card-header">
                     <h4>

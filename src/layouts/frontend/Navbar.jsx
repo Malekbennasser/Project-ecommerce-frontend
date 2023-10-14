@@ -56,7 +56,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-xxl px-1 bg-body-tertiary">
       <div className="container">
-        <Link className="navbar-brand  " to="/">
+        <Link className="navbar-brand   " to="/">
           <h2 className="h2 text-dark border-bottom  border-light logo">
             THE STORE
           </h2>
@@ -94,7 +94,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/collections">
+              <Link className="nav-link" to="collections">
                 Collection
               </Link>
             </li>

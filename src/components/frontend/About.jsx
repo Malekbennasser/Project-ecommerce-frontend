@@ -61,10 +61,10 @@ function About() {
                 }
                 alt="About Hero"
                 className="w-100"
-                onError={(e) => {
-                  e.target.src =
-                    "./src/assets/frontend/assets/img/undraw_mobile_ux_re_59hr.svg"; // Provide a fallback image
-                }}
+                // onError={(e) => {
+                //   e.target.src =
+                //     "./src/assets/frontend/assets/img/undraw_mobile_ux_re_59hr.svg"; // Provide a fallback image
+                // }}
               />
             </div>
           </div>

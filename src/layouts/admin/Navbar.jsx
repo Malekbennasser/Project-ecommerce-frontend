@@ -1,14 +1,14 @@
 import axios from "axios";
-import { useState } from "react";
+// import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 const Navbar = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setDropdownOpen(!isDropdownOpen);
+  // };
 
   const navigate = useNavigate();
   const logoutSubmit = (e) => {
@@ -27,20 +27,20 @@ const Navbar = () => {
   return (
     <div>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <Link className="navbar-brand ps-3" to="/admin">
+        <Link className="navbar-brand ps-3" to="/">
           THE STORE
         </Link>
 
-        <button
+        {/* <button
           className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           id="sidebarToggle"
-          href="#!"
+          to="#!"
         >
           <i className="fas fa-bars"></i>
-        </button>
+        </button> */}
 
-        <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3  my-md-0">
-          {/* <div className="input-group">
+        {/* <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3  my-md-0"> */}
+        {/* <div className="input-group">
             <input
               className="form-control"
               type="text"
@@ -56,13 +56,21 @@ const Navbar = () => {
               <i className="fas fa-search"></i>
             </button>
           </div> */}
-        </form>
+        {/* </form> */}
 
         <ul className="navbar-nav ms-md-1 me-5 me-lg-5  ">
-          <li className={`nav-item dropdown  ${isDropdownOpen ? "show" : ""}`}>
+          <li></li>
+          <Link
+            onClick={logoutSubmit}
+            className="text-white flaot-end"
+            href="#!"
+          >
+            Logout
+          </Link>
+          {/* <li className={`nav-item dropdown  ${isDropdownOpen ? "show" : ""}`}>
             <button
               className="nav-link dropdown-toggle"
-              href="#"
+              to="#"
               role="button"
               onClick={toggleDropdown}
             >
@@ -71,21 +79,18 @@ const Navbar = () => {
             <ul
               className={`dropdown-menu dropdown-menu ${
                 isDropdownOpen ? "show" : ""
-              }`}
-            >
-              {/* <a className="dropdown-item" href="#!">
+              }`} */}
+          {/* > */}
+          {/* <a className="dropdown-item" href="#!">
                 Settings
               </a>
               <a className="dropdown-item" href="#!">
                 Activity Log
               </a> */}
-              {/* <div className="dropdown-divider"></div> */}
-              <Link onClick={logoutSubmit} className="dropdown-item" href="#!">
-                Logout
-              </Link>
-            </ul>
-          </li>
+          {/* <div className="dropdown-divider"></div> */}
         </ul>
+        {/* </li> */}
+        {/* </ul> */}
       </nav>
     </div>
   );

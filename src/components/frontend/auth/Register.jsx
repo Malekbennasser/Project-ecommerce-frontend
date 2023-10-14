@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-// import Navbar from "../../../layouts/frontend/Navbar";
+
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../../Axios/AxiosConfig";
 import swal from "sweetalert";
 function Register() {
   const navigate = useNavigate();

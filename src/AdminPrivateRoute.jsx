@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./Axios/AxiosConfig";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -45,7 +45,13 @@ function AdminPrivateRoute() {
   }, [navigate]);
 
   if (loading) {
-    return <h1>Loading......</h1>;
+    return (
+      <div className="text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   return authenticated ? <Outlet /> : <Navigate to="/login" />;

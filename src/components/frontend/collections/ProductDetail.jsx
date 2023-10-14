@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../../Axios/AxiosConfig";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
@@ -16,7 +16,7 @@ function ProductDetail() {
   console.log(category_slug);
 
   useEffect(() => {
-    var isMounted = true;
+    let isMounted = true;
     axios
       .get(`/api/viewproductdetail/${category_slug}/${product_slug}`)
       .then((response) => {
@@ -93,7 +93,7 @@ function ProductDetail() {
                 <button
                   type="button"
                   onClick={handleDecrement}
-                  className="input-group-text"
+                  className="input-group-text rounded-0"
                 >
                   -
                 </button>
@@ -102,7 +102,7 @@ function ProductDetail() {
                 <button
                   type="button"
                   onClick={handleIncrement}
-                  className="input-group-text"
+                  className="input-group-text rounded-0"
                 >
                   +
                 </button>
@@ -111,7 +111,7 @@ function ProductDetail() {
             <div className="col-md-3 mt-3">
               <button
                 type="button"
-                className="btn btn-primary w-100"
+                className="btn btn-dark rounded-0 w-100"
                 onClick={submitAddtocart}
               >
                 Add to Cart
@@ -153,19 +153,19 @@ function ProductDetail() {
             <div className="col-md-8">
               <h4>
                 {product.name}
-                <span className="float-end badget btn btn-sm btn-danger Badge-pil">
+                <span className="float-end badget btn btn-sm btn-dark rounded-0 Badge-pil">
                   {product.brand}
                 </span>
               </h4>
               <p>{product.description}</p>
               <h4 className="mb-1">
-                Rs:{product.selling_price}
-                <s className="ms-2"> Rs:{product.original_price}</s>
+                Price:{product.selling_price} €
+                <s className="ms-2"> Price:{product.original_price} €</s>
               </h4>
-              <div>{avail_stock}</div>
-              <button type="button" className="btn btn-danger mt-3">
+              <div>Stock{avail_stock}</div>
+              {/* <button type="button" className="btn btn-danger mt-3">
                 Add to Wishlist
-              </button>
+              </button> */}
             </div>
             <div></div>
           </div>
