@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen }) => {
   return (
     <nav
-      className="sb-sidenav accordion sb-sidenav-dark fixed"
+      className={`sb-sidenav accordion sb-sidenav-dark fixed ${
+        isOpen ? "show" : ""
+      }`}
       id="sidenavAccordion"
     >
       <div className="sb-sidenav-menu">

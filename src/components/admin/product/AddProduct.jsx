@@ -40,6 +40,7 @@ function AddProduct() {
   };
 
   useEffect(() => {
+    document.title = "Add Product";
     axios.get("/api/all-category").then((response) => {
       if (response.data.status === 200) {
         setCategorylist(response.data.category);

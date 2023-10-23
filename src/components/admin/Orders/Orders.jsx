@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
-// import axios from "axios";
 import axios from "../../../Axios/AxiosConfig";
 import { Link } from "react-router-dom";
 
 function Orders() {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
-  // const [pagination, setPagination] = useState({});
+
   useEffect(() => {
     let isMounted = true;
     document.title = "Orders";
@@ -17,7 +16,6 @@ function Orders() {
       if (isMounted) {
         if (response.data.status === 200) {
           setOrders(response.data.orders);
-          // setPagination(response.data.pagination);
         }
         setLoading(false);
       }
@@ -26,15 +24,6 @@ function Orders() {
       isMounted = false;
     };
   }, []);
-  // const loadPage = (url) => {
-  //   axios.get(url).then((response) => {
-  //     if (response.data.status === 200) {
-  //       setOrders(response.data.orders);
-  //       // setPagination(response.data.pagination); // Set updated pagination data
-  //       Navigate(url); // Use history.push to navigate
-  //     }
-  //   });
-  // };
 
   let display_orders = "";
 
@@ -61,7 +50,7 @@ function Orders() {
               to={`view-order/${item.id}`}
               className="btn btn-success btn-sm"
             >
-              Edit
+              Voir
             </Link>
           </td>
         </tr>
@@ -69,7 +58,6 @@ function Orders() {
     });
   }
 
-  console.log("orders", orders);
   return (
     <>
       <div className="sb-nav-fixed">
@@ -100,21 +88,6 @@ function Orders() {
                       </thead>
                       <tbody className="text-center">{display_orders}</tbody>
                     </table>
-                    {/* {pagination.prev_page_url && (
-                      <button
-                        onClick={() => loadPage(pagination.prev_page_url)}
-                      >
-                        Previous
-                      </button>
-                    )}
-                    Page {pagination.current_page} of {pagination.last_page}
-                    {pagination.next_page_url && (
-                      <button
-                        onClick={() => loadPage(pagination.next_page_url)}
-                      >
-                        Next
-                      </button>
-                    )} */}
                   </div>
                 </div>
               </div>

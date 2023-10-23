@@ -3,7 +3,6 @@ import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
 import { useEffect, useState } from "react";
-// import axios from "axios";
 import axios from "../../../Axios/AxiosConfig";
 import swal from "sweetalert";
 
@@ -45,7 +44,6 @@ function EditCategory() {
   }, [id, navigate]);
 
   const handleInput = (e) => {
-    e.persist();
     setCategory({ ...categoryInput, [e.target.name]: e.target.value });
   };
 
@@ -63,7 +61,7 @@ function EditCategory() {
         setError(response.data.error);
       } else if (response.data.errors === 404) {
         swal("Error", response.data.messages, "error");
-        navigate("admin/view-category");
+        navigate("/admin/view-category");
       }
     });
   };

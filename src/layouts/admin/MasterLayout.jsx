@@ -28,7 +28,6 @@ import Navbar from "./Navbar";
 import "../../assets/admin/css/styles.css";
 import "../../assets/admin/js/scripts";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
 import Dashboard from "../../components/admin/Dashboard";
 import Profile from "../../components/admin/Profile";
 import { Route, Routes } from "react-router-dom";
@@ -39,11 +38,19 @@ import AddProduct from "../../components/admin/product/AddProduct";
 import ViewProduct from "../../components/admin/product/ViewProduct";
 import EditProduct from "../../components/admin/product/EditProduct";
 import Orders from "../../components/admin/Orders/Orders";
+import { useState } from "react";
 
 const MasterLayout = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   return (
-    <div className="sb-nav-fixed">
-      <Navbar />
+    <div
+      className={`sb-nav-fixed ${isSidebarOpen ? "" : "sb-sidenav-toggled"}`}
+    >
+      <Navbar toggleSidebar={toggleSidebar} />
 
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -67,7 +74,7 @@ const MasterLayout = () => {
               <Route path="/admin/ordres" element={<Orders />} />
             </Routes>
           </main>
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
     </div>

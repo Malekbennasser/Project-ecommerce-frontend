@@ -14,7 +14,6 @@ function Login() {
   });
 
   const handleInput = (e) => {
-    e.persist();
     setLogin({ ...loginInput, [e.target.name]: e.target.value });
   };
 
@@ -90,7 +89,7 @@ function Login() {
                         </div>
 
                         <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
-                          <Link className="small text-dark" to="">
+                          <Link className="small text-dark" to="/forget">
                             Forgot Password?
                           </Link>
                           <button

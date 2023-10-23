@@ -17,6 +17,7 @@ function ProductDetail() {
 
   useEffect(() => {
     let isMounted = true;
+
     axios
       .get(`/api/viewproductdetail/${category_slug}/${product_slug}`)
       .then((response) => {
@@ -40,13 +41,13 @@ function ProductDetail() {
   //quantity increment/decrement
 
   const handleDecrement = () => {
-    if (quantity > 1) {
+    if (quantity > 0) {
       setQuantity((prevCount) => prevCount - 1);
     }
   };
 
   const handleIncrement = () => {
-    if (quantity < 10) {
+    if (quantity < product.qty) {
       setQuantity((prevCount) => prevCount + 1);
     }
   };
@@ -159,10 +160,10 @@ function ProductDetail() {
               </h4>
               <p>{product.description}</p>
               <h4 className="mb-1">
-                Price:{product.selling_price} €
-                <s className="ms-2"> Price:{product.original_price} €</s>
+                Price: {product.selling_price} €
+                {/* <s className="ms-2"> Price:{product.original_price} €</s> */}
               </h4>
-              <div>Stock{avail_stock}</div>
+              <div className="mb-1">Stock :{avail_stock}</div>
               {/* <button type="button" className="btn btn-danger mt-3">
                 Add to Wishlist
               </button> */}

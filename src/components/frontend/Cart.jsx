@@ -1,4 +1,3 @@
-// import axios from "axios";
 import axios from "../../Axios/AxiosConfig";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,8 +14,9 @@ function Cart() {
       navigate("/");
       swal("Warning", "login to go to Cart Page", "error");
     }
-    var isMounted = true;
+    let isMounted = true;
     axios.get(`/api/cart`).then((response) => {
+      console.log(response);
       if (isMounted) {
         if (response.data.status === 200) {
           setCart(response.data.cart);
@@ -48,21 +48,28 @@ function Cart() {
     updateCartQuantity(cart_id, "dec");
   };
   const handleIncrement = (cart_id) => {
-    setCart((cart) =>
-      cart.map((item) =>
-        cart_id === item.id
-          ? {
-              ...item,
-              product_Qty: item.product_Qty + (item.product_Qty < 10 ? 1 : 0),
-            }
-          : item
-      )
-    );
-    updateCartQuantity(cart_id, "inc");
+    const cartItem = cart.find((item) => item.id === cart_id);
+    const productQty = cartItem.product_Qty;
+    const productStock = cartItem.product.qty;
+    if (productQty < productStock) {
+      setCart((cart) =>
+        cart.map((item) =>
+          cart_id === item.id
+            ? {
+                ...item,
+                product_Qty: item.product_Qty + (item.product_Qty < 10 ? 1 : 0),
+              }
+            : item
+        )
+      );
+      updateCartQuantity(cart_id, "inc");
+    } else {
+      swal("Warrning", "The maximum allowed quantity ", "error");
+    }
   };
 
-  function updateCartQuantity(cart_id, scope) {
-    axios
+  async function updateCartQuantity(cart_id, scope) {
+    await axios
       .put(`/api/cart-updatequantity/${cart_id}/${scope}`)
       .then((response) => {
         if (response.data.status === 200) {
@@ -78,28 +85,23 @@ function Cart() {
     return totalPrice;
   }
 
-  function deleteCartItem(e, cart_id) {
+  async function deleteCartItem(e, cart_id) {
     e.preventDefault();
 
     const thisCliked = e.currentTarget;
     thisCliked.innerText = "Removing";
 
-    axios.delete(`/api/delete-cartitem/${cart_id}`).then((response) => {
+    await axios.delete(`/api/delete-cartitem/${cart_id}`).then((response) => {
       if (response.data.status === 200) {
         setTimeout(() => {
           swal("Success", response.data.message, "success");
         }, 1000);
 
-        // setCart((prevCart) => prevCart.filter((item) => item.id !== cart_id));
-        // // Recalculate the total cart price
-        // totalCartPrice = calculateTotalCartPrice(cart);
-
         setTimeout(() => {
           thisCliked.closest("tr").remove();
 
-          // Update the cart state after removing an item
           setCart((prevCart) => prevCart.filter((item) => item.id !== cart_id));
-          // Recalculate the total cart price
+
           totalCartPrice = calculateTotalCartPrice(cart);
         }, 300);
       } else if (response.data.status === 404) {
@@ -138,11 +140,12 @@ function Cart() {
                 <th className="text-center">Remove</th>
               </tr>
             </thead>
-            <tbody>
-              {cart.map((item, index) => {
-                totalCartPrice = calculateTotalCartPrice(cart);
-                return (
-                  <tr key={index}>
+
+            {cart.map((item) => {
+              totalCartPrice = calculateTotalCartPrice(cart);
+              return (
+                <tbody key={item.id}>
+                  <tr>
                     <td width="10%">
                       <img
                         src={`http://localhost:8000/${item.product.image} `}
@@ -190,9 +193,9 @@ function Cart() {
                       </button>
                     </td>
                   </tr>
-                );
-              })}
-            </tbody>
+                </tbody>
+              );
+            })}
           </table>
         </div>
         <div className="row">
@@ -230,9 +233,7 @@ function Cart() {
     <div>
       <div>
         <div className="py-5 bg-body-tertiary">
-          <div className="container">
-            <h6>Home / Card</h6>
-          </div>
+          <div className="container">{/* <h6>Home / Card</h6> */}</div>
         </div>
 
         <div className="py-4   h-100">

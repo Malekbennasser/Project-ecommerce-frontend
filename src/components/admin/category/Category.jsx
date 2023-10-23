@@ -2,7 +2,7 @@ import { useState } from "react";
 import Footer from "../../../layouts/admin/Footer";
 import Navbar from "../../../layouts/admin/Navbar";
 import Sidebar from "../../../layouts/admin/Sidebar";
-// import axios from "axios";
+
 import axios from "../../../Axios/AxiosConfig";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
@@ -18,7 +18,7 @@ function Category() {
     meta_descrip: "",
     error_list: [],
   });
-
+  document.title = "Add Category";
   const handleInput = (e) => {
     e.persist();
     setCategoryInput({ ...categoryInput, [e.target.name]: e.target.value });

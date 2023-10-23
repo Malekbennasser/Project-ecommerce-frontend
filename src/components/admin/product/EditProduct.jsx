@@ -23,9 +23,6 @@ function EditProduct() {
     original_price: "",
     qty: "",
     brand: "",
-    // featured: "",
-    // popular: "",
-    // status: "",
   });
 
   const navigate = useNavigate();

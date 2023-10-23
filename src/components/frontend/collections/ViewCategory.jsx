@@ -37,10 +37,6 @@ function ViewCategory() {
       return (
         <div className="col-md-4 py-3 " key={index}>
           <div className="card rounded-0 border border-0 btn btn-outline-light">
-            {/* <Link
-              className="text-decoration-none text-dark"
-              to={`${item.slug}`}
-            ></Link> */}
             <div className="card-body text-center">
               <Link
                 className="text-decoration-none text-dark"

@@ -1,14 +1,14 @@
 import axios from "axios";
-// import { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-const Navbar = () => {
-  // const [isDropdownOpen, setDropdownOpen] = useState(false);
+const Navbar = ({ toggleSidebar }) => {
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  // const toggleDropdown = () => {
-  //   setDropdownOpen(!isDropdownOpen);
-  // };
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
 
   const navigate = useNavigate();
   const logoutSubmit = (e) => {
@@ -31,17 +31,18 @@ const Navbar = () => {
           THE STORE
         </Link>
 
-        {/* <button
+        <button
           className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           id="sidebarToggle"
           to="#!"
+          onClick={toggleSidebar}
         >
           <i className="fas fa-bars"></i>
-        </button> */}
+        </button>
 
-        {/* <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3  my-md-0"> */}
-        {/* <div className="input-group">
-            <input
+        <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3  my-md-0">
+          <div className="input-group">
+            {/* <input
               className="form-control"
               type="text"
               placeholder="Search for..."
@@ -54,16 +55,15 @@ const Navbar = () => {
               type="button"
             >
               <i className="fas fa-search"></i>
-            </button>
-          </div> */}
-        {/* </form> */}
+            </button> */}
+          </div>
+        </form>
 
-        <ul className="navbar-nav ms-md-1 me-5 me-lg-5  ">
+        <ul className="navbar-nav  ">
           <li></li>
           <Link
             onClick={logoutSubmit}
-            className="text-white flaot-end"
-            href="#!"
+            className=" nav-link text-white text-decoration-none px-5 "
           >
             Logout
           </Link>

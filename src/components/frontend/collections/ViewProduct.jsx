@@ -10,7 +10,8 @@ function ViewProduct() {
   const [category, setCategory] = useState([]);
 
   const [brandFilter, setBrandFilter] = useState("All");
-  const [slugFilter, setSlugFilter] = useState("All");
+
+  const [priceFilter, setPriceFilter] = useState("All");
 
   const navigate = useNavigate();
   const { product_slug } = useParams();
@@ -19,6 +20,7 @@ function ViewProduct() {
   useEffect(() => {
     var isMounted = true;
     axios.get(`/api/fetchproducts/${product_slug}`).then((response) => {
+      console.log("response", response);
       if (isMounted) {
         if (response.data.status === 200) {
           setProduct(response.data.product_data.product);
@@ -40,23 +42,31 @@ function ViewProduct() {
   }, [navigate, product_slug]);
 
   const uniqueBrands = [...new Set(product.map((item) => item.brand))];
-  const uniqueSlugs = [...new Set(product.map((item) => item.slug))];
 
   let filteredProducts = product;
 
   if (brandFilter !== "All") {
     filteredProducts = filteredProducts.filter((item) => {
-      // Replace 'brand' with the property you want to filter by (e.g., item.brand)
       console.log("filter", filteredProducts);
       return item.brand === brandFilter;
     });
   }
 
-  if (slugFilter !== "All") {
-    filteredProducts = filteredProducts.filter((item) => {
-      // Replace 'slug' with the property you want to filter by (e.g., item.slug)
-      return item.slug === slugFilter;
-    });
+  if (priceFilter !== "All") {
+    if (priceFilter === "1500plus") {
+      filteredProducts = filteredProducts.filter((item) => {
+        const itemPrice = parseFloat(item.selling_price);
+        return itemPrice >= 1500;
+      });
+    } else {
+      const [minPrice, maxPrice] = priceFilter.split("-");
+      filteredProducts = filteredProducts.filter((item) => {
+        const itemPrice = parseFloat(item.selling_price);
+        return (
+          itemPrice >= parseFloat(minPrice) && itemPrice <= parseFloat(maxPrice)
+        );
+      });
+    }
   }
 
   let showProductList = "";
@@ -120,15 +130,6 @@ function ViewProduct() {
       <div className="row">
         <div className="col">
           <ul className="d-flex float-end list-inline shop-top-menu pb-3 pt-1">
-            {/* <li className="list-inline-item">
-              <Link
-                className="h3 text-dark text-decoration-none mr-3"
-                to="/collections/"
-              >
-                All
-              </Link>
-            </li> */}
-
             <div className="d-flex"></div>
             <div className="d-flex">
               <select
@@ -142,22 +143,21 @@ function ViewProduct() {
                     {brand}
                   </option>
                 ))}
-                {/* Add other brand options as needed */}
               </select>
             </div>
+
             <div className="d-flex">
               <select
                 className="form-control rounded-0"
-                value={slugFilter}
-                onChange={(e) => setSlugFilter(e.target.value)}
+                value={priceFilter}
+                onChange={(e) => setPriceFilter(e.target.value)}
               >
-                <option value="All">All Category</option>
-                {uniqueSlugs.map((slug) => (
-                  <option key={slug} value={slug}>
-                    {slug}
-                  </option>
-                ))}
-                {/* Add other slug options as needed */}
+                <option value="All">All Prices</option>
+                <option value="0-500">0 - 500 €</option>
+                <option value="500-1000">500 - 1000 €</option>
+                <option value="1000-1500">1000 - 1500 €</option>
+                <option value="1500plus"> + 1500 € </option>
+                {/* Ajoutez d'autres options de prix selon vos besoins */}
               </select>
             </div>
           </ul>

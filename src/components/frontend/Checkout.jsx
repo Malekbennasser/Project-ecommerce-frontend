@@ -57,7 +57,7 @@ function Checkout() {
   }, [navigate]);
 
   const handleInput = (e) => {
-    e.persist();
+    // e.persist();
     setCheckinput({ ...checkoutInput, [e.target.name]: e.target.value });
   };
 
@@ -108,16 +108,17 @@ function Checkout() {
       console.log("data to send", dataToSend);
 
       await axios.post(`/api/test`, dataToSend).then((response) => {
-        const paymentId = response.data.paymentIntent.payment_id; //
+        const paymentId = response.data.paymentIntent.payment_id;
         console.log(response.data.paymentIntent);
         if (response.data.status === 200) {
-          console.log("id", paymentId); // Extract the payment ID
+          console.log("id", paymentId);
           Orderinfo_data.payment_id = paymentId;
           swal("Order Placed Successfully", paymentId, "success");
           console.log("Paiement réussi :", paymentId);
-          navigate("/thank-you");
+          setTimeout(() => {
+            navigate("/thank-you");
+          }, 300);
         } else {
-          // Traitez les erreurs renvoyées par le serveur, par exemple, affichez-les à l'utilisateur.
           console.error("Erreur de paiement :", response.data.errors);
         }
       });
@@ -148,7 +149,9 @@ function Checkout() {
           if (response.data.status === 200) {
             swal("Order Placed Successfully", response.data.message, "success");
             setError([]);
-            navigate("/than-you");
+            setTimeout(() => {
+              navigate("/thank-you");
+            }, 300);
           } else if (response.data.status === 422) {
             swal("All fields are mandetory", "success");
             setError(response.data.errors);
@@ -316,14 +319,14 @@ function Checkout() {
                       <button
                         type="button"
                         onClick={(e) => submitOrder(e, "cod")}
-                        className="btn btn-primary mx-1"
+                        className="btn btn-dark rounded-0 mx-1"
                       >
                         Place Order
                       </button>
                       <button
                         type="button"
                         onClick={(e) => submitOrder(e, "payonline")}
-                        className="btn btn-primary mx-1"
+                        className="btn btn-dark rounded-0 mx-1"
                       >
                         Pay Online
                       </button>
@@ -380,7 +383,7 @@ function Checkout() {
       </div>
     );
   }
-  /* console.log("Adem", cart[0].id); */
+
   return (
     <>
       <div
@@ -470,7 +473,7 @@ function Checkout() {
 
       <div className="py-3 bg-body-tertiary">
         <div className="container">
-          <h6>/ checkout</h6>
+          <h6></h6>
         </div>
       </div>
       <div className="py-3 ">

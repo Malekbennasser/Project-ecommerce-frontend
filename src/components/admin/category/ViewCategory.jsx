@@ -12,6 +12,7 @@ function ViewCategory() {
   const [categorylist, setCategorylist] = useState([]);
 
   useEffect(() => {
+    document.title = "View Category";
     axios.get("/api/view-category").then((response) => {
       //   console.log(response.data.category);
       if (response.data.status === 200) {
@@ -53,7 +54,7 @@ function ViewCategory() {
         <tr key={item.id}>
           <td>{item.id}</td>
           <td>{item.name}</td>
-          <td>{item.slug}</td>
+          <td>{item.description}</td>
           <td>{item.status}</td>
           <td>
             <Link
@@ -107,7 +108,7 @@ function ViewCategory() {
                         <tr>
                           <th>ID</th>
                           <th>Name</th>
-                          <th>Slug</th>
+                          <th>Description</th>
                           <th>Status</th>
                           <th>Edit</th>
                           <th>Delete</th>

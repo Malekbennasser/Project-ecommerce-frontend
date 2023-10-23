@@ -10,6 +10,10 @@ import ViewProduct from "../components/frontend/collections/ViewProduct";
 import ProductDetail from "../components/frontend/collections/ProductDetail";
 import Cart from "../components/frontend/Cart";
 import Checkout from "../components/frontend/Checkout";
+
+import Passwordforget from "../components/frontend/auth/Passwordforget";
+import ResetPassword from "../components/frontend/auth/ResetPassword";
+import Thankyou from "../components/frontend/Thankyou";
 // import FilterCategories from "../components/frontend/FilterCategories";
 
 const RoutesList = [
@@ -24,12 +28,14 @@ const RoutesList = [
   },
   { path: "/cart", element: <Cart /> },
   { path: "/checkout", element: <Checkout /> },
-
+  { path: "/thank-you", element: <Thankyou /> },
   { path: "/403", element: <Page403 /> },
   { path: "/404", element: <Page404 /> },
   { path: "/login", element: <Login /> },
 
   { path: "/register", element: <Register /> },
+  { path: "/forget", element: <Passwordforget /> },
+  { path: "/ResetPassword/:token", element: <ResetPassword /> },
 
   { path: "/products/category/:category", element: <ViewProduct /> },
   { path: "/products/brand/:brand", element: <ViewProduct /> },
